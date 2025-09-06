@@ -1,0 +1,26 @@
+runtime: php84
+
+env_variables:
+  APP_ENV: production
+  APP_DEBUG: false
+  APP_KEY: base64:CaIq+SHo8HQJsJASscPDNqCTmuXscPyLQum1sVSAXmY=
+  APP_URL: https://transportes-ultrarapidos-api.appspot.com
+  
+  DB_CONNECTION: mysql
+  DB_HOST: 127.0.0.1
+  DB_PORT: 3306
+  DB_DATABASE: transportes_db
+  DB_USERNAME: laravel
+  DB_PASSWORD: LaravelPass123!
+  DB_SOCKET: /cloudsql/transportes-ultrarapidos-api:us-central1:transportes-db
+  
+  SESSION_DRIVER: database
+  CACHE_DRIVER: database
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 5
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
