@@ -11,7 +11,7 @@ class CamionController extends Controller
     public function index()
     {
         $camiones = Camion::with('transportista')->get();
-        
+
         return response()->json([
             'success' => true,
             'data' => $camiones
@@ -19,27 +19,20 @@ class CamionController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'transportista_id' => 'required|exists:transportistas,id',
-            'placa' => 'required|string|unique:camiones,placa',
-            'tipo' => 'required|string|max:100',
-            'capacidad' => 'required|numeric|min:0',
-            'estado' => 'required|in:activo,mantenimiento,fuera_servicio',
-            'año' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
-            'marca' => 'nullable|string|max:100',
-            'modelo' => 'nullable|string|max:100',
-        ]);
+{
+    $request->validate([
+        'transportista_id' => 'required|exists:transportistas,id',
+        'placa' => 'required|string|unique:camiones,placa',
+    ]);
 
-        $camion = Camion::create($request->all());
-        $camion->load('transportista');
+    $camion = Camion::create($request->all());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Camión creado exitosamente',
-            'data' => $camion
-        ], 201);
-    }
+    return response()->json([
+        'success' => true,
+        'message' => 'Camión creado exitosamente',
+        'data' => $camion
+    ], 201);
+}
 
     public function show($id)
     {
@@ -59,36 +52,29 @@ class CamionController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $camion = Camion::find($id);
+{
+    $camion = Camion::find($id);
 
-        if (!$camion) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Camión no encontrado'
-            ], 404);
-        }
-
-        $request->validate([
-            'transportista_id' => 'required|exists:transportistas,id',
-            'placa' => 'required|string|unique:camiones,placa,' . $id,
-            'tipo' => 'required|string|max:100',
-            'capacidad' => 'required|numeric|min:0',
-            'estado' => 'required|in:activo,mantenimiento,fuera_servicio',
-            'año' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
-            'marca' => 'nullable|string|max:100',
-            'modelo' => 'nullable|string|max:100',
-        ]);
-
-        $camion->update($request->all());
-        $camion->load('transportista');
-
+    if (!$camion) {
         return response()->json([
-            'success' => true,
-            'message' => 'Camión actualizado exitosamente',
-            'data' => $camion
-        ]);
+            'success' => false,
+            'message' => 'Camión no encontrado'
+        ], 404);
     }
+
+    $request->validate([
+        'transportista_id' => 'required|exists:transportistas,id',
+        'placa' => 'required|string|unique:camiones,placa,' . $id,
+    ]);
+
+    $camion->update($request->all());
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Camión actualizado exitosamente',
+        'data' => $camion
+    ]);
+}
 
     public function destroy($id)
     {
