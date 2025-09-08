@@ -19,9 +19,7 @@ class Camion extends Model
     'estado',
     'año',
     'marca',
-    'modelo',
-    'capacidad_carga',
-    'tipo_combustible'
+    'modelo'
 ];
 
     protected $casts = [

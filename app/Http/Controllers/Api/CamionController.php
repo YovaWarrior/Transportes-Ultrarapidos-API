@@ -20,18 +20,29 @@ class CamionController extends Controller
 
     public function store(Request $request)
 {
-    $request->validate([
-        'transportista_id' => 'required|exists:transportistas,id',
-        'placa' => 'required|string|unique:camiones,placa',
-    ]);
+    try {
+        $camion = new Camion();
+        $camion->transportista_id = $request->transportista_id;
+        $camion->placa = $request->placa;
+        $camion->tipo = $request->tipo ?? 'carga';
+        $camion->capacidad = $request->capacidad ?? 0;
+        $camion->estado = $request->estado ?? 'activo';
+        $camion->año = $request->año ?? date('Y');
+        $camion->marca = $request->marca ?? 'Sin especificar';
+        $camion->modelo = $request->modelo ?? 'Sin especificar';
+        $camion->save();
 
-    $camion = Camion::create($request->all());
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Camión creado exitosamente',
-        'data' => $camion
-    ], 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Camión creado exitosamente',
+            'data' => $camion
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
 
     public function show($id)

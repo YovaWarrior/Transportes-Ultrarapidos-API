@@ -13,14 +13,14 @@ class OrdenTrabajoController extends Controller
     public function index()
     {
         $ordenes = OrdenTrabajo::with([
-            'camion.transportista', 
-            'piloto', 
-            'predio', 
+            'camion.transportista',
+            'piloto',
+            'predio',
             'bodega',
             'ingresoCamion',
             'egresoCamion'
         ])->get();
-        
+
         return response()->json([
             'success' => true,
             'data' => $ordenes
@@ -28,41 +28,39 @@ class OrdenTrabajoController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'camion_id' => 'required|exists:camiones,id',
-            'piloto_id' => 'required|exists:pilotos,id',
-            'predio_id' => 'required|exists:predios,id',
-            'bodega_id' => 'required|exists:bodegas,id',
-        ]);
-
+{
+    try {
         // Generar número de orden automático
         $numeroOrden = 'ORD-' . date('Y') . '-' . str_pad(OrdenTrabajo::count() + 1, 6, '0', STR_PAD_LEFT);
 
-        $orden = OrdenTrabajo::create([
-            'numero_orden' => $numeroOrden,
-            'camion_id' => $request->camion_id,
-            'piloto_id' => $request->piloto_id,
-            'predio_id' => $request->predio_id,
-            'bodega_id' => $request->bodega_id,
-            'estado' => 'pendiente'
-        ]);
-
-        $orden->load(['camion.transportista', 'piloto', 'predio', 'bodega']);
+        $orden = new OrdenTrabajo();
+        $orden->numero_orden = $numeroOrden;
+        $orden->camion_id = $request->camion_id;
+        $orden->piloto_id = $request->piloto_id;
+        $orden->predio_id = $request->predio_id ?? 1; // Valor por defecto
+        $orden->bodega_id = $request->bodega_id ?? 1; // Valor por defecto
+        $orden->estado = $request->estado ?? 'pendiente';
+        $orden->save();
 
         return response()->json([
             'success' => true,
             'message' => 'Orden de trabajo creada exitosamente',
             'data' => $orden
         ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function show($id)
     {
         $orden = OrdenTrabajo::with([
-            'camion.transportista', 
-            'piloto', 
-            'predio', 
+            'camion.transportista',
+            'piloto',
+            'predio',
             'bodega',
             'ingresoCamion',
             'egresoCamion',

@@ -12,13 +12,13 @@ class OrdenTrabajo extends Model
     protected $table = 'ordenes_trabajo';
 
     protected $fillable = [
-        'numero_orden',
-        'camion_id',
-        'piloto_id',
-        'predio_id',
-        'bodega_id',
-        'estado'
-    ];
+    'numero_orden',
+    'camion_id',
+    'piloto_id',
+    'predio_id',
+    'bodega_id',
+    'estado'
+];
 
     // Relaciones
     public function camion()
