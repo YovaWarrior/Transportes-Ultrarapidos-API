@@ -12,15 +12,17 @@ class Camion extends Model
     protected $table = 'camiones';
 
     protected $fillable = [
-        'transportista_id',
-        'placa',
-        'tipo',
-        'capacidad',
-        'estado',
-        'año',
-        'marca',
-        'modelo'
-    ];
+    'transportista_id',
+    'placa',
+    'tipo',
+    'capacidad',
+    'estado',
+    'año',
+    'marca',
+    'modelo',
+    'capacidad_carga',
+    'tipo_combustible'
+];
 
     protected $casts = [
         'capacidad' => 'decimal:2',

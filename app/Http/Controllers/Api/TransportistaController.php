@@ -9,14 +9,24 @@ use Illuminate\Http\Request;
 class TransportistaController extends Controller
 {
     public function index()
-    {
-        $transportistas = Transportista::with(['camiones', 'pilotos'])->get();
-        
+{
+    try {
+        // Probar sin relaciones primero
+        $transportistas = Transportista::all();
+
         return response()->json([
             'success' => true,
-            'data' => $transportistas
+            'data' => $transportistas,
+            'count' => $transportistas->count()
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile()
+        ], 500);
     }
+}
 
     public function store(Request $request)
     {
