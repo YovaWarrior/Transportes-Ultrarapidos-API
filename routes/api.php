@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TransportistaController;
@@ -22,6 +23,23 @@ Route::apiResource('vales-combustible', ValeCombustibleController::class);
 
 Route::post('/ordenes/{id}/ingreso', [OrdenTrabajoController::class, 'registrarIngreso']);
 Route::post('/ordenes/{id}/egreso', [OrdenTrabajoController::class, 'registrarEgreso']);
+
+Route::get('/migrate', function () {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Migraciones ejecutadas correctamente',
+            'output' => Artisan::output()
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al ejecutar migraciones',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
 
 Route::get('/test', function () {
     return response()->json([
