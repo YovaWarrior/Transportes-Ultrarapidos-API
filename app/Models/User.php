@@ -15,6 +15,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'active',
     ];
 
     protected $hidden = [
@@ -27,6 +29,29 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'active' => 'boolean',
         ];
+    }
+
+    // Helper methods for roles
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isOperativo(): bool
+    {
+        return $this->role === 'operativo';
+    }
+
+    public function isPiloto(): bool
+    {
+        return $this->role === 'piloto';
+    }
+
+    // Relationships for reporting
+    public function valesCombustible()
+    {
+        return $this->hasMany(\App\Models\ValeCombustible::class);
     }
 }
