@@ -22,7 +22,8 @@
       </div>
     </div>
 
-    <!-- Botón Nuevo -->
+    <!-- Botón Nuevo (Solo Admin y Operativo) -->
+    @if(auth()->user()->canCreate())
     <div class="mb-4">
       <a href="{{ route('ordenes.create') }}" class="inline-flex items-center px-4 py-2 border border-sky-300 rounded-lg shadow-sm text-sm font-medium text-sky-700 bg-white hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,6 +32,7 @@
         Nueva Orden
       </a>
     </div>
+    @endif
 
     <!-- Filtros -->
     <div class="mb-6 bg-white rounded-lg shadow p-4">

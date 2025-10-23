@@ -32,14 +32,20 @@
             </dl>
           </div>
 
+          @if(auth()->user()->canEdit() || auth()->user()->canDelete())
           <div class="flex items-center justify-between">
+            @if(auth()->user()->canEdit())
             <a href="{{ route('ordenes.edit', $orden->id) }}" class="px-4 py-2 text-sm font-medium text-white bg-sky-600 rounded-lg hover:bg-sky-700">Editar</a>
+            @endif
+            @if(auth()->user()->canDelete())
             <form action="{{ route('ordenes.destroy', $orden->id) }}" method="POST" onsubmit="return confirm('¿Eliminar orden?');">
               @csrf
               @method('DELETE')
               <button class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">Eliminar</button>
             </form>
+            @endif
           </div>
+          @endif
         </div>
 
         <!-- Actividad -->
@@ -48,10 +54,12 @@
           <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
               <h2 class="text-lg font-semibold text-gray-900">Movimientos</h2>
+              @if(auth()->user()->canCreate())
               <div class="space-x-2">
                 <a href="{{ route('movimientos.ingresos.create', ['orden_trabajo_id' => $orden->id]) }}" class="text-green-700 hover:text-green-900 text-sm font-medium">Registrar Ingreso</a>
                 <a href="{{ route('movimientos.egresos.create', ['orden_trabajo_id' => $orden->id]) }}" class="text-blue-700 hover:text-blue-900 text-sm font-medium">Registrar Egreso</a>
               </div>
+              @endif
             </div>
             <div class="divide-y divide-gray-200">
               @if($orden->ingresoCamion)

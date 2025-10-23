@@ -32,10 +32,7 @@
                     </div>
                     <div class="bg-white/20 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/30 hover:bg-white/30 transition">
                         <div class="text-2xl sm:text-4xl font-black text-white leading-none drop-shadow-lg">{{ $mantenimiento }}</div>
-                        <div class="text-xs sm:text-sm font-bold tracking-wide uppercase text-white mt-1.5 sm:mt-2 drop-shadow">
-                            <span class="hidden sm:inline">MANTENIMIENTO</span>
-                            <span class="sm:hidden">MANT.</span>
-                        </div>
+                        <div class="text-xs sm:text-sm font-bold tracking-wide uppercase text-white mt-1.5 sm:mt-2 drop-shadow">MANTENIMIENTO</div>
                     </div>
                 </div>
             </div>

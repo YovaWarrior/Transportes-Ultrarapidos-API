@@ -35,7 +35,8 @@
       </div>
     </div>
 
-    <!-- Botón Registrar -->
+    <!-- Botón Registrar (Solo Admin y Operativo) -->
+    @if(auth()->user()->canCreate())
     <div class="mb-4">
       <a href="{{ route('combustible.create') }}" class="inline-flex items-center px-4 py-2 border border-orange-300 rounded-lg shadow-sm text-sm font-medium text-orange-700 bg-white hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,6 +45,7 @@
         Registrar Vale
       </a>
     </div>
+    @endif
 
     <!-- Filtros -->
     <div class="mb-6 bg-white rounded-lg shadow p-4">
