@@ -85,6 +85,18 @@ class ValeCombustibleController extends Controller
             'user_id' => auth()->id(),
         ]);
 
+        // Registrar actividad
+        DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'ValeCombustible',
+            'model_id' => $vale->id,
+            'description' => 'Vale de combustible creado: ' . $vale->cantidad_galones . ' gal - Q' . $vale->total,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('combustible.show', $vale->id)
             ->with('success', 'Vale de combustible registrado correctamente.');
     }

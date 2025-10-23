@@ -52,6 +52,18 @@ class PilotoController extends Controller
         $data['active'] = $request->boolean('active');
         $piloto = Piloto::create($data);
 
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'Piloto',
+            'model_id' => $piloto->id,
+            'description' => 'Piloto creado: ' . $piloto->nombre,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('pilotos.show', $piloto->id)->with('success', 'Piloto creado correctamente.');
     }
 
@@ -89,13 +101,39 @@ class PilotoController extends Controller
         $data['active'] = $request->boolean('active');
         $piloto->update($data);
 
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'update',
+            'model_type' => 'Piloto',
+            'model_id' => $piloto->id,
+            'description' => 'Piloto actualizado: ' . $piloto->nombre,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('pilotos.show', $piloto->id)->with('success', 'Piloto actualizado.');
     }
 
     public function destroy($id)
     {
         $piloto = Piloto::findOrFail($id);
+        $nombrePiloto = $piloto->nombre;
         $piloto->delete();
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'model_type' => 'Piloto',
+            'model_id' => $id,
+            'description' => 'Piloto eliminado: ' . $nombrePiloto,
+            'ip_address' => request()->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('pilotos.index')->with('success', 'Piloto eliminado.');
     }
 }

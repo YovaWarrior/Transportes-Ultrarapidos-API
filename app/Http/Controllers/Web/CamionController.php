@@ -89,7 +89,19 @@ class CamionController extends Controller
                 ->withInput();
         }
 
-        Camion::create($request->all());
+        $camion = Camion::create($request->all());
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'Camion',
+            'model_id' => $camion->id,
+            'description' => 'Camión creado: ' . $camion->placa,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         return redirect()->route('camiones.index')
             ->with('success', 'Camión registrado exitosamente.');
@@ -144,6 +156,18 @@ class CamionController extends Controller
 
         $camion->update($request->all());
 
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'update',
+            'model_type' => 'Camion',
+            'model_id' => $camion->id,
+            'description' => 'Camión actualizado: ' . $camion->placa,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('camiones.show', $camion->id)
             ->with('success', 'Camión actualizado exitosamente.');
     }
@@ -161,7 +185,20 @@ class CamionController extends Controller
                 ->with('error', 'No se puede eliminar el camión porque tiene órdenes de trabajo asociadas.');
         }
 
+        $placaCamion = $camion->placa;
         $camion->delete();
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'model_type' => 'Camion',
+            'model_id' => $id,
+            'description' => 'Camión eliminado: ' . $placaCamion,
+            'ip_address' => request()->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         return redirect()->route('camiones.index')
             ->with('success', 'Camión eliminado exitosamente.');

@@ -48,6 +48,18 @@ class BodegaController extends Controller
         $data['active'] = $request->boolean('active');
         $bodega = Bodega::create($data);
 
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'Bodega',
+            'model_id' => $bodega->id,
+            'description' => 'Bodega creada: ' . $bodega->nombre,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('bodegas.show', $bodega->id)->with('success', 'Bodega creada correctamente.');
     }
 
@@ -83,13 +95,39 @@ class BodegaController extends Controller
         $data['active'] = $request->boolean('active');
         $bodega->update($data);
 
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'update',
+            'model_type' => 'Bodega',
+            'model_id' => $bodega->id,
+            'description' => 'Bodega actualizada: ' . $bodega->nombre,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('bodegas.show', $bodega->id)->with('success', 'Bodega actualizada.');
     }
 
     public function destroy($id)
     {
         $bodega = Bodega::findOrFail($id);
+        $nombreBodega = $bodega->nombre;
         $bodega->delete();
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'model_type' => 'Bodega',
+            'model_id' => $id,
+            'description' => 'Bodega eliminada: ' . $nombreBodega,
+            'ip_address' => request()->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('bodegas.index')->with('success', 'Bodega eliminada.');
     }
 }

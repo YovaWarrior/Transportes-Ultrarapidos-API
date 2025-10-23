@@ -20,26 +20,26 @@
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <!-- Header con gradiente -->
-                    <div class="bg-gradient-to-r from-transport to-transport-dark px-6 py-8 text-white">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-8 text-white">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h1 class="text-3xl font-bold">{{ $camion->placa }}</h1>
-                                <p class="mt-2 text-blue-100">{{ $camion->marca }} {{ $camion->modelo }}</p>
+                                <h1 class="text-3xl font-bold text-white">{{ $camion->placa }}</h1>
+                                <p class="mt-2 text-lg font-medium text-white">{{ $camion->marca }} {{ $camion->modelo }}</p>
                             </div>
                             <div class="text-right">
                                 @if($camion->estado === 'activo')
-                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white bg-opacity-20 text-white backdrop-blur">
-                                        <span class="w-2 h-2 bg-success-400 rounded-full mr-2 animate-pulse"></span>
+                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-green-500 text-white shadow-lg">
+                                        <span class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
                                         ACTIVO
                                     </span>
                                 @elseif($camion->estado === 'mantenimiento')
-                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white bg-opacity-20 text-white backdrop-blur">
-                                        <span class="w-2 h-2 bg-warning-400 rounded-full mr-2"></span>
+                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-yellow-500 text-gray-900 shadow-lg">
+                                        <span class="w-2 h-2 bg-gray-900 rounded-full mr-2"></span>
                                         MANTENIMIENTO
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white bg-opacity-20 text-white backdrop-blur">
-                                        <span class="w-2 h-2 bg-error-400 rounded-full mr-2"></span>
+                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-red-500 text-white shadow-lg">
+                                        <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
                                         FUERA SERVICIO
                                     </span>
                                 @endif
@@ -135,7 +135,7 @@
 
                         <!-- Action Buttons -->
                         <div class="mt-8 pt-6 border-t border-gray-200 flex space-x-3">
-                            <a href="{{ route('camiones.edit', $camion->id) }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <a href="{{ route('camiones.edit', $camion->id) }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                 </svg>

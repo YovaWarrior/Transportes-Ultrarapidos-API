@@ -16,7 +16,7 @@
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Orden de Trabajo <span class="text-red-500">*</span></label>
-          <select name="orden_trabajo_id" class="mt-1 block w-full rounded-lg border-gray-300 focus:border-green-600 focus:ring-green-600 @error('orden_trabajo_id') border-red-500 @enderror" required>
+          <select name="orden_trabajo_id" class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-green-600 focus:ring-green-600 @error('orden_trabajo_id') border-red-500 @enderror" required>
             <option value="">Seleccione una orden</option>
             @foreach($ordenes as $o)
               <option value="{{ $o->id }}" {{ (old('orden_trabajo_id', request('orden_trabajo_id')) == $o->id) ? 'selected' : '' }}>
@@ -30,12 +30,12 @@
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
             <label class="block text-sm font-medium text-gray-700">Origen <span class="text-red-500">*</span></label>
-            <input type="text" name="origen" value="{{ old('origen') }}" class="mt-1 block w-full rounded-lg border-gray-300 focus:border-green-600 focus:ring-green-600 @error('origen') border-red-500 @enderror" required>
+            <input type="text" name="origen" value="{{ old('origen') }}" placeholder="Ej: Ciudad Guatemala" class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-green-600 focus:ring-green-600 @error('origen') border-red-500 @enderror" required>
             @error('origen')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Tipo de Carga <span class="text-red-500">*</span></label>
-            <input type="text" name="tipo_carga" value="{{ old('tipo_carga') }}" class="mt-1 block w-full rounded-lg border-gray-300 focus:border-green-600 focus:ring-green-600 @error('tipo_carga') border-red-500 @enderror" required>
+            <input type="text" name="tipo_carga" value="{{ old('tipo_carga') }}" placeholder="Ej: Carga seca, Refrigerada" class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-green-600 focus:ring-green-600 @error('tipo_carga') border-red-500 @enderror" required>
             @error('tipo_carga')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
           </div>
         </div>

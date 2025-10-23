@@ -238,12 +238,37 @@ class ReporteController extends Controller
 
     public function reporteActividad(Request $request)
     {
-        // Aquí contamos registros creados por usuario (simplificado)
-        // En producción usarías la tabla activity_logs
-        
-        $usuarios = \App\Models\User::withCount([
-            'valesCombustible as vales_count',
-        ])->get();
+        // Obtener todos los usuarios con sus estadísticas de actividad
+        $usuarios = \App\Models\User::all()->map(function($user) {
+            // Contar acciones por tipo desde activity_logs
+            $totalAcciones = DB::table('activity_logs')
+                ->where('user_id', $user->id)
+                ->count();
+            
+            $acciones = DB::table('activity_logs')
+                ->where('user_id', $user->id)
+                ->select('action', DB::raw('count(*) as total'))
+                ->groupBy('action')
+                ->pluck('total', 'action');
+            
+            // Última actividad - usando ORDER BY id DESC para asegurar el más reciente
+            $ultimaActividad = DB::table('activity_logs')
+                ->where('user_id', $user->id)
+                ->orderBy('id', 'desc')
+                ->first();
+            
+            return [
+                'usuario' => $user,
+                'total_acciones' => $totalAcciones,
+                'login' => $acciones['login'] ?? 0,
+                'logout' => $acciones['logout'] ?? 0,
+                'create' => $acciones['create'] ?? 0,
+                'update' => $acciones['update'] ?? 0,
+                'delete' => $acciones['delete'] ?? 0,
+                // Usar Carbon::parse que automáticamente usa la timezone de la app
+                'ultima_actividad' => $ultimaActividad ? \Carbon\Carbon::parse($ultimaActividad->created_at) : null,
+            ];
+        })->sortByDesc('total_acciones');
 
         return view('reportes.actividad', compact('usuarios'));
     }

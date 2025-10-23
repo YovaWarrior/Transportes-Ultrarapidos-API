@@ -55,6 +55,18 @@ class TransportistaController extends Controller
         $data['active'] = $request->boolean('active');
         $transportista = Transportista::create($data);
 
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'Transportista',
+            'model_id' => $transportista->id,
+            'description' => 'Transportista creado: ' . $transportista->nombre,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('transportistas.show', $transportista->id)
             ->with('success', 'Transportista creado correctamente.');
     }
@@ -92,6 +104,18 @@ class TransportistaController extends Controller
         $data['active'] = $request->boolean('active');
         $transportista->update($data);
 
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'update',
+            'model_type' => 'Transportista',
+            'model_id' => $transportista->id,
+            'description' => 'Transportista actualizado: ' . $transportista->nombre,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('transportistas.show', $transportista->id)
             ->with('success', 'Transportista actualizado.');
     }
@@ -99,7 +123,20 @@ class TransportistaController extends Controller
     public function destroy($id)
     {
         $transportista = Transportista::findOrFail($id);
+        $nombreTransportista = $transportista->nombre;
         $transportista->delete();
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'model_type' => 'Transportista',
+            'model_id' => $id,
+            'description' => 'Transportista eliminado: ' . $nombreTransportista,
+            'ip_address' => request()->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         return redirect()->route('transportistas.index')
             ->with('success', 'Transportista eliminado.');

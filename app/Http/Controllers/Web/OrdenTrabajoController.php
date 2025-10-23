@@ -39,7 +39,7 @@ class OrdenTrabajoController extends Controller
         $pilotos = \App\Models\Piloto::where('active', true)->orderBy('nombre')->get();
         $predios = \App\Models\Predio::where('active', true)->orderBy('nombre')->get();
         $bodegas = \App\Models\Bodega::where('active', true)->with('predio')->orderBy('nombre')->get();
-        $estados = ['abierta','en_proceso','cerrada'];
+        $estados = ['pendiente','en_proceso','completada','cancelada'];
         return view('ordenes.create', compact('camiones','pilotos','predios','bodegas','estados'));
     }
 
@@ -50,7 +50,7 @@ class OrdenTrabajoController extends Controller
             'piloto_id' => 'nullable|exists:pilotos,id',
             'predio_id' => 'nullable|exists:predios,id',
             'bodega_id' => 'nullable|exists:bodegas,id',
-            'estado' => 'required|in:abierta,en_proceso,cerrada',
+            'estado' => 'required|in:pendiente,en_proceso,completada,cancelada',
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -70,6 +70,19 @@ class OrdenTrabajoController extends Controller
         $data['numero_orden'] = sprintf('OT-%s-%04d', $today, $sequence);
         
         $orden = OrdenTrabajo::create($data);
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'OrdenTrabajo',
+            'model_id' => $orden->id,
+            'description' => 'Orden de trabajo creada: ' . $orden->numero_orden,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('ordenes.show', $orden->id)->with('success', 'Orden creada correctamente.');
     }
 
@@ -86,7 +99,7 @@ class OrdenTrabajoController extends Controller
         $pilotos = \App\Models\Piloto::where('active', true)->orderBy('nombre')->get();
         $predios = \App\Models\Predio::where('active', true)->orderBy('nombre')->get();
         $bodegas = \App\Models\Bodega::where('active', true)->with('predio')->orderBy('nombre')->get();
-        $estados = ['abierta','en_proceso','cerrada'];
+        $estados = ['pendiente','en_proceso','completada','cancelada'];
         return view('ordenes.edit', compact('orden','camiones','pilotos','predios','bodegas','estados'));
     }
 
@@ -98,19 +111,46 @@ class OrdenTrabajoController extends Controller
             'piloto_id' => 'nullable|exists:pilotos,id',
             'predio_id' => 'nullable|exists:predios,id',
             'bodega_id' => 'nullable|exists:bodegas,id',
-            'estado' => 'required|in:abierta,en_proceso,cerrada',
+            'estado' => 'required|in:pendiente,en_proceso,completada,cancelada',
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
         $orden->update($validator->validated());
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'update',
+            'model_type' => 'OrdenTrabajo',
+            'model_id' => $orden->id,
+            'description' => 'Orden de trabajo actualizada: ' . $orden->numero_orden,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('ordenes.show', $orden->id)->with('success', 'Orden actualizada.');
     }
 
     public function destroy($id)
     {
         $orden = OrdenTrabajo::findOrFail($id);
+        $numeroOrden = $orden->numero_orden;
         $orden->delete();
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'delete',
+            'model_type' => 'OrdenTrabajo',
+            'model_id' => $id,
+            'description' => 'Orden de trabajo eliminada: ' . $numeroOrden,
+            'ip_address' => request()->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('ordenes.index')->with('success', 'Orden eliminada.');
     }
 }

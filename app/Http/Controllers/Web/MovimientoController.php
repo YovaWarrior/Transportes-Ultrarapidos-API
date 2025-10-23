@@ -58,13 +58,25 @@ class MovimientoController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        IngresoCamion::create([
+        $ingreso = IngresoCamion::create([
             'orden_trabajo_id' => $request->orden_trabajo_id,
             'origen' => $request->origen,
             'tipo_carga' => $request->tipo_carga,
             'fecha_ingreso' => $request->fecha_ingreso,
             'observaciones' => $request->observaciones,
             'user_id' => auth()->id(),
+        ]);
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'IngresoCamion',
+            'model_id' => $ingreso->id,
+            'description' => 'Ingreso registrado desde: ' . $ingreso->origen,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()->route('movimientos.index')->with('success', 'Ingreso registrado correctamente.');
@@ -101,7 +113,7 @@ class MovimientoController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        EgresoCamion::create([
+        $egreso = EgresoCamion::create([
             'orden_trabajo_id' => $request->orden_trabajo_id,
             'destino' => $request->destino,
             'tipo_carga' => $request->tipo_carga,
@@ -109,6 +121,18 @@ class MovimientoController extends Controller
             'kilometraje' => $request->kilometraje,
             'observaciones' => $request->observaciones,
             'user_id' => auth()->id(),
+        ]);
+
+        // Registrar actividad
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => 'create',
+            'model_type' => 'EgresoCamion',
+            'model_id' => $egreso->id,
+            'description' => 'Egreso registrado hacia: ' . $egreso->destino,
+            'ip_address' => $request->ip(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()->route('movimientos.index')->with('success', 'Egreso registrado correctamente.');

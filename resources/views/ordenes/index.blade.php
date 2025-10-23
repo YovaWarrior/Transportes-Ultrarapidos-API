@@ -5,36 +5,63 @@
 @section('content')
 <div class="py-6">
   <div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
-    <div class="mb-6 flex items-center justify-between">
-      <div>
-        <h1 class="text-3xl font-bold text-gray-900">Órdenes de Trabajo</h1>
-        <p class="mt-1 text-sm text-gray-600">Gestión de órdenes vinculadas a camiones</p>
-      </div>
-      <div>
-        <a href="{{ route('ordenes.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-sky-600 rounded-lg hover:bg-sky-700">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          Nueva Orden
-        </a>
+    <!-- Header con gradiente -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-sky-600 to-cyan-600 rounded-2xl mb-6 shadow-lg">
+      <div class="px-6 py-8 sm:px-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-white">Órdenes de Trabajo</h1>
+            <p class="mt-2 text-sm text-sky-100">Gestión de órdenes vinculadas a camiones</p>
+          </div>
+          <div class="hidden sm:block">
+            <svg class="w-16 h-16 text-white opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Botón Nuevo -->
+    <div class="mb-4">
+      <a href="{{ route('ordenes.create') }}" class="inline-flex items-center px-4 py-2 border border-sky-300 rounded-lg shadow-sm text-sm font-medium text-sky-700 bg-white hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Nueva Orden
+      </a>
+    </div>
+
+    <!-- Filtros -->
     <div class="mb-6 bg-white rounded-lg shadow p-4">
-      <form method="GET" class="grid grid-cols-1 gap-4 sm:grid-cols-4">
-        <div class="sm:col-span-2">
-          <label class="block text-sm font-medium text-gray-700">Buscar</label>
-          <input type="text" name="search" value="{{ request('search') }}" class="mt-1 block w-full rounded-lg border-gray-300 focus:border-sky-600 focus:ring-sky-600" placeholder="Número de orden, placa, marca, modelo">
+      <form method="GET" class="space-y-4 sm:space-y-0 sm:flex sm:items-end sm:space-x-4">
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Buscar</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Número, placa, marca, modelo..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500">
+          </div>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Estado</label>
-          <select name="estado" class="mt-1 block w-full rounded-lg border-gray-300 focus:border-sky-600 focus:ring-sky-600">
+        <div class="w-full sm:w-48">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+          <select name="estado" class="block w-full py-2 px-3 border border-gray-300 bg-white rounded-lg focus:ring-sky-500 focus:border-sky-500">
             <option value="todos" {{ request('estado')=='todos' ? 'selected' : '' }}>Todos</option>
             <option value="abierta" {{ request('estado')=='abierta' ? 'selected' : '' }}>Abierta</option>
             <option value="en_proceso" {{ request('estado')=='en_proceso' ? 'selected' : '' }}>En proceso</option>
             <option value="cerrada" {{ request('estado')=='cerrada' ? 'selected' : '' }}>Cerrada</option>
           </select>
         </div>
-        <div class="flex items-end">
-          <button class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-sky-600 rounded-lg hover:bg-sky-700">Filtrar</button>
+        <div>
+          <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+            </svg>
+            Filtrar
+          </button>
         </div>
       </form>
     </div>
@@ -66,8 +93,8 @@
                   @endif
                 </td>
                 <td class="px-6 py-4 text-right space-x-2">
-                  <a href="{{ route('ordenes.show', $o->id) }}" class="text-sky-700 hover:text-sky-900 text-sm font-medium">Ver</a>
-                  <a href="{{ route('ordenes.edit', $o->id) }}" class="text-gray-600 hover:text-gray-800 text-sm font-medium">Editar</a>
+                  <a href="{{ route('ordenes.show', $o->id) }}" class="inline-flex items-center px-3 py-1 text-xs font-medium text-sky-700 bg-sky-100 rounded-lg hover:bg-sky-200">Ver</a>
+                  <a href="{{ route('ordenes.edit', $o->id) }}" class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Editar</a>
                 </td>
               </tr>
             @empty

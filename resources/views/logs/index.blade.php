@@ -5,17 +5,29 @@
 @section('content')
 <div class="py-6">
   <div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
-    <div class="mb-6">
-      <h1 class="text-3xl font-bold text-gray-900">Logs de Actividad del Sistema</h1>
-      <p class="mt-1 text-sm text-gray-600">Auditoría completa de acciones realizadas</p>
+    <!-- Header con gradiente -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-slate-700 to-gray-800 rounded-2xl mb-6 shadow-lg">
+      <div class="px-6 py-8 sm:px-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-white">Logs de Actividad del Sistema</h1>
+            <p class="mt-2 text-sm text-slate-200">Auditoría completa de acciones realizadas</p>
+          </div>
+          <div class="hidden sm:block">
+            <svg class="w-16 h-16 text-white opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Filtros -->
     <div class="mb-6 bg-white rounded-lg shadow p-4">
-      <form method="GET" class="grid grid-cols-1 gap-4 sm:grid-cols-5">
+      <form method="GET" class="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-5 sm:gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700">Usuario</label>
-          <select name="user_id" class="mt-1 block w-full rounded-lg border-gray-300">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+          <select name="user_id" class="block w-full py-2 px-3 border border-gray-300 bg-white rounded-lg focus:ring-slate-500 focus:border-slate-500">
             <option value="">Todos</option>
             @foreach($usuarios as $u)
               <option value="{{ $u->id }}" {{ request('user_id') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
@@ -23,8 +35,8 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700">Acción</label>
-          <select name="action" class="mt-1 block w-full rounded-lg border-gray-300">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Acción</label>
+          <select name="action" class="block w-full py-2 px-3 border border-gray-300 bg-white rounded-lg focus:ring-slate-500 focus:border-slate-500">
             <option value="">Todas</option>
             @foreach($acciones as $a)
               <option value="{{ $a }}" {{ request('action') == $a ? 'selected' : '' }}>{{ ucfirst($a) }}</option>
@@ -32,15 +44,20 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700">Desde</label>
-          <input type="date" name="desde" value="{{ request('desde') }}" class="mt-1 block w-full rounded-lg border-gray-300">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Desde</label>
+          <input type="date" name="desde" value="{{ request('desde') }}" class="block w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500">
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700">Hasta</label>
-          <input type="date" name="hasta" value="{{ request('hasta') }}" class="mt-1 block w-full rounded-lg border-gray-300">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Hasta</label>
+          <input type="date" name="hasta" value="{{ request('hasta') }}" class="block w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500">
         </div>
         <div class="flex items-end">
-          <button class="w-full px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-lg hover:bg-gray-800">Filtrar</button>
+          <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+            </svg>
+            Filtrar
+          </button>
         </div>
       </form>
     </div>

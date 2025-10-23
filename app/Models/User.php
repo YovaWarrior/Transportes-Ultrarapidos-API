@@ -49,6 +49,27 @@ class User extends Authenticatable
         return $this->role === 'piloto';
     }
 
+    // Permissions helper methods
+    public function canCreate(): bool
+    {
+        return in_array($this->role, ['admin', 'operativo']);
+    }
+
+    public function canEdit(): bool
+    {
+        return in_array($this->role, ['admin', 'operativo']);
+    }
+
+    public function canDelete(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function canOnlyView(): bool
+    {
+        return $this->role === 'piloto';
+    }
+
     // Relationships for reporting
     public function valesCombustible()
     {

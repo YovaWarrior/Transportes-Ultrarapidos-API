@@ -83,7 +83,7 @@
 
                     <!-- Botones -->
                     <div class="flex space-x-2">
-                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
                             </svg>
@@ -99,15 +99,17 @@
             </div>
         </div>
 
-        <!-- Botón Agregar (flotante móvil, fijo desktop) -->
-        <div class="mb-4">
-            <a href="{{ route('camiones.create') }}" class="inline-flex items-center px-4 py-2 border border-primary-300 rounded-lg shadow-sm text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                Agregar Camión
-            </a>
-        </div>
+        <!-- Botón Agregar (solo Admin y Operativo) -->
+        @if(auth()->user()->canCreate())
+            <div class="mb-4">
+                <a href="{{ route('camiones.create') }}" class="inline-flex items-center px-4 py-2 border border-primary-300 rounded-lg shadow-sm text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Agregar Camión
+                </a>
+            </div>
+        @endif
 
         <!-- Camiones List -->
         <div class="space-y-4">
@@ -179,15 +181,23 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                     <h3 class="mt-2 text-sm font-medium text-gray-900">No hay camiones</h3>
-                    <p class="mt-1 text-sm text-gray-500">Comienza agregando un nuevo camión a la flota.</p>
-                    <div class="mt-6">
-                        <a href="{{ route('camiones.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            Agregar Camión
-                        </a>
-                    </div>
+                    <p class="mt-1 text-sm text-gray-500">
+                        @if(auth()->user()->canCreate())
+                            Comienza agregando un nuevo camión a la flota.
+                        @else
+                            No hay vehículos registrados en el sistema.
+                        @endif
+                    </p>
+                    @if(auth()->user()->canCreate())
+                        <div class="mt-6">
+                            <a href="{{ route('camiones.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Agregar Camión
+                            </a>
+                        </div>
+                    @endif
                 </div>
             @endforelse
         </div>
