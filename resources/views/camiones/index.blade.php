@@ -115,60 +115,52 @@
         <div class="space-y-4">
             @forelse($camiones as $camion)
                 <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location='{{ route('camiones.show', $camion->id) }}'">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4 flex-1">
+                    <div class="p-4 sm:p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div class="flex items-start sm:items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
                                 <!-- Placa Badge -->
                                 <div class="flex-shrink-0">
-                                    <div class="w-24 h-12 bg-primary-100 border border-primary-300 rounded-lg flex items-center justify-center">
+                                    <div class="w-16 h-10 sm:w-24 sm:h-12 bg-primary-100 border border-primary-300 rounded-lg flex items-center justify-center">
                                         <span class="text-primary-800 font-bold text-xs tracking-wider">{{ $camion->placa }}</span>
                                     </div>
                                 </div>
 
                                 <!-- Info -->
                                 <div class="flex-1 min-w-0">
-                                    <h3 class="text-lg font-semibold text-gray-900">
+                                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 truncate">
                                         {{ $camion->marca }} {{ $camion->modelo }}
                                     </h3>
-                                    <p class="text-sm text-gray-500 mt-1">
-                                        Año {{ $camion->año }} • Capacidad {{ $camion->capacidad }} ton
+                                    <p class="text-xs sm:text-sm text-gray-500 mt-1">
+                                        Año {{ $camion->año }} • Cap. {{ $camion->capacidad }} ton
                                     </p>
-                                    <p class="text-sm text-gray-500">
+                                    <p class="text-xs sm:text-sm text-gray-500 truncate">
                                         {{ $camion->transportista->nombre ?? 'Sin transportista' }}
                                     </p>
                                 </div>
-
-                                <!-- Estado Badge -->
-                                <div class="flex-shrink-0">
-                                    @if($camion->estado === 'activo')
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-success-100 text-success-700">
-                                            <span class="w-2 h-2 bg-success-500 rounded-full mr-2"></span>
-                                            ACTIVO
-                                        </span>
-                                    @elseif($camion->estado === 'mantenimiento')
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-warning-100 text-warning-700">
-                                            <span class="w-2 h-2 bg-warning-500 rounded-full mr-2"></span>
-                                            MANTENIMIENTO
-                                        </span>
-                                    @else
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-error-100 text-error-700">
-                                            <span class="w-2 h-2 bg-error-500 rounded-full mr-2"></span>
-                                            FUERA SERVICIO
-                                        </span>
-                                    @endif
-                                </div>
-
-                                <!-- Tipo Badge -->
-                                <div class="flex-shrink-0">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                                        {{ ucfirst($camion->tipo) }}
-                                    </span>
-                                </div>
                             </div>
 
-                            <!-- Chevron -->
-                            <div class="flex-shrink-0 ml-4">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <!-- Estado Badge -->
+                            <div class="flex-shrink-0 flex items-center space-x-2">
+                                @if($camion->estado === 'activo')
+                                    <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-success-100 text-success-700">
+                                        <span class="w-2 h-2 bg-success-500 rounded-full mr-1.5 sm:mr-2"></span>
+                                        ACTIVO
+                                    </span>
+                                @elseif($camion->estado === 'mantenimiento')
+                                    <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-warning-100 text-warning-700">
+                                        <span class="w-2 h-2 bg-warning-500 rounded-full mr-1.5 sm:mr-2"></span>
+                                        <span class="hidden sm:inline">MANTENIMIENTO</span>
+                                        <span class="sm:hidden">MANTEN.</span>
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-error-100 text-error-700">
+                                        <span class="w-2 h-2 bg-error-500 rounded-full mr-1.5 sm:mr-2"></span>
+                                        <span class="hidden sm:inline">FUERA SERVICIO</span>
+                                        <span class="sm:hidden">F. SERVICIO</span>
+                                    </span>
+                                @endif
+                                <!-- Chevron -->
+                                <svg class="w-5 h-5 text-gray-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
                             </div>
