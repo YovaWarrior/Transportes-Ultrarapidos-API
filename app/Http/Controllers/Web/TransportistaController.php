@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Transportista;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class TransportistaController extends Controller
 {
@@ -56,7 +57,7 @@ class TransportistaController extends Controller
         $transportista = Transportista::create($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'Transportista',
@@ -105,7 +106,7 @@ class TransportistaController extends Controller
         $transportista->update($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'update',
             'model_type' => 'Transportista',
@@ -127,7 +128,7 @@ class TransportistaController extends Controller
         $transportista->delete();
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'delete',
             'model_type' => 'Transportista',

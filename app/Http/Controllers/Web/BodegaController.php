@@ -7,6 +7,7 @@ use App\Models\Bodega;
 use App\Models\Predio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class BodegaController extends Controller
 {
@@ -49,7 +50,7 @@ class BodegaController extends Controller
         $bodega = Bodega::create($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'Bodega',
@@ -96,7 +97,7 @@ class BodegaController extends Controller
         $bodega->update($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'update',
             'model_type' => 'Bodega',
@@ -117,7 +118,7 @@ class BodegaController extends Controller
         $bodega->delete();
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'delete',
             'model_type' => 'Bodega',

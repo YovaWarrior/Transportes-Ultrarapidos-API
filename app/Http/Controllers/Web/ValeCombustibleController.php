@@ -7,6 +7,7 @@ use App\Models\ValeCombustible;
 use App\Models\OrdenTrabajo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ValeCombustibleController extends Controller
 {

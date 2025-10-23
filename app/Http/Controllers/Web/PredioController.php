@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Predio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class PredioController extends Controller
 {
@@ -46,7 +47,7 @@ class PredioController extends Controller
         $predio = Predio::create($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'Predio',
@@ -93,7 +94,7 @@ class PredioController extends Controller
         $predio->update($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'update',
             'model_type' => 'Predio',
@@ -114,7 +115,7 @@ class PredioController extends Controller
         $predio->delete();
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'delete',
             'model_type' => 'Predio',

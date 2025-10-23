@@ -7,6 +7,7 @@ use App\Models\OrdenTrabajo;
 use App\Models\Camion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class OrdenTrabajoController extends Controller
 {
@@ -72,7 +73,7 @@ class OrdenTrabajoController extends Controller
         $orden = OrdenTrabajo::create($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'OrdenTrabajo',
@@ -119,7 +120,7 @@ class OrdenTrabajoController extends Controller
         $orden->update($validator->validated());
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'update',
             'model_type' => 'OrdenTrabajo',
@@ -140,7 +141,7 @@ class OrdenTrabajoController extends Controller
         $orden->delete();
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'delete',
             'model_type' => 'OrdenTrabajo',

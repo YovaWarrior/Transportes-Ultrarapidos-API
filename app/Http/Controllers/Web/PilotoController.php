@@ -7,6 +7,7 @@ use App\Models\Piloto;
 use App\Models\Transportista;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class PilotoController extends Controller
 {
@@ -53,7 +54,7 @@ class PilotoController extends Controller
         $piloto = Piloto::create($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'Piloto',
@@ -102,7 +103,7 @@ class PilotoController extends Controller
         $piloto->update($data);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'update',
             'model_type' => 'Piloto',
@@ -123,7 +124,7 @@ class PilotoController extends Controller
         $piloto->delete();
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'delete',
             'model_type' => 'Piloto',

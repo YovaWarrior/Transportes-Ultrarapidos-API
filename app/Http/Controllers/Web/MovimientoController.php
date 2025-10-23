@@ -9,6 +9,7 @@ use App\Models\OrdenTrabajo;
 use App\Models\Camion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class MovimientoController extends Controller
 {
@@ -68,7 +69,7 @@ class MovimientoController extends Controller
         ]);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'IngresoCamion',
@@ -124,7 +125,7 @@ class MovimientoController extends Controller
         ]);
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'EgresoCamion',

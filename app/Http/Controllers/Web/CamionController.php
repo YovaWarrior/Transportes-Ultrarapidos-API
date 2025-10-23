@@ -7,6 +7,7 @@ use App\Models\Camion;
 use App\Models\Transportista;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class CamionController extends Controller
 {
@@ -92,7 +93,7 @@ class CamionController extends Controller
         $camion = Camion::create($request->all());
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'create',
             'model_type' => 'Camion',
@@ -157,7 +158,7 @@ class CamionController extends Controller
         $camion->update($request->all());
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'update',
             'model_type' => 'Camion',
@@ -189,7 +190,7 @@ class CamionController extends Controller
         $camion->delete();
 
         // Registrar actividad
-        \DB::table('activity_logs')->insert([
+        DB::table('activity_logs')->insert([
             'user_id' => auth()->id(),
             'action' => 'delete',
             'model_type' => 'Camion',
