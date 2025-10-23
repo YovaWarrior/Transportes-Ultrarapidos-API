@@ -188,7 +188,7 @@
                     </a>
                 </div>
             </div>
-            <div class="overflow-hidden">
+            <div class="overflow-x-auto">
                 @if($ultimasOrdenes->count() > 0)
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
