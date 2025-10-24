@@ -18,7 +18,7 @@ return new class extends Migration
         $table->datetime('fecha_vale');
         $table->decimal('precio_galon', 6, 2)->nullable();
         $table->decimal('total', 10, 2)->nullable();
-        $table->foreignId('user_id')->constrained('users');
+        $table->foreignId('user_id')->nullable()->constrained('users');
         $table->text('observaciones')->nullable();
         $table->timestamps();
     });
