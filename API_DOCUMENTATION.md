@@ -256,17 +256,31 @@ POST /api/ordenes/{id}/ingreso
 Content-Type: application/json
 
 {
-  "camion_id": 1,
-  "predio_id": 2,
-  "bodega_id": 3,
   "origen": "Predio Las Flores",
   "tipo_carga": "Maíz",
-  "peso_bruto": 5000.00,
-  "tara": 1000.00,
-  "peso_neto": 4000.00,
-  "fecha_ingreso": "2025-10-23 10:30:00"
+  "fecha_ingreso": "2025-10-23 10:30:00",
+  "observaciones": "Carga en buen estado" (opcional)
+}
+
+Response:
+{
+  "success": true,
+  "message": "Ingreso registrado exitosamente",
+  "data": {
+    "id": 1,
+    "orden_trabajo_id": 5,
+    "origen": "Predio Las Flores",
+    "tipo_carga": "Maíz",
+    "fecha_ingreso": "2025-10-23 10:30:00",
+    "user_id": null,
+    "observaciones": "Carga en buen estado",
+    "created_at": "2025-10-23T10:30:00.000000Z",
+    "updated_at": "2025-10-23T10:30:00.000000Z"
+  }
 }
 ```
+
+**⚠️ Nota:** NO incluir `camion_id`, `predio_id`, `bodega_id`, `peso_bruto`, `tara`, `peso_neto` - estos campos no existen.
 
 ### 📤 Registrar Egreso a una orden
 ```http
@@ -274,18 +288,33 @@ POST /api/ordenes/{id}/egreso
 Content-Type: application/json
 
 {
-  "camion_id": 1,
-  "predio_id": 2,
-  "bodega_id": 3,
   "destino": "Bodega Central",
   "tipo_carga": "Maíz",
-  "peso_bruto": 5000.00,
-  "tara": 1000.00,
-  "peso_neto": 4000.00,
-  "kilometraje": 150.5,
-  "fecha_egreso": "2025-10-23 15:45:00"
+  "fecha_egreso": "2025-10-23 15:45:00",
+  "kilometraje": 150,
+  "observaciones": "Entrega completa" (opcional)
+}
+
+Response:
+{
+  "success": true,
+  "message": "Egreso registrado exitosamente",
+  "data": {
+    "id": 1,
+    "orden_trabajo_id": 5,
+    "destino": "Bodega Central",
+    "tipo_carga": "Maíz",
+    "fecha_egreso": "2025-10-23 15:45:00",
+    "kilometraje": 150,
+    "user_id": null,
+    "observaciones": "Entrega completa",
+    "created_at": "2025-10-23T15:45:00.000000Z",
+    "updated_at": "2025-10-23T15:45:00.000000Z"
+  }
 }
 ```
+
+**⚠️ Nota:** `kilometraje` es opcional. NO incluir `camion_id`, `predio_id`, `bodega_id`, `peso_bruto`, `tara`, `peso_neto`.
 
 ---
 
@@ -294,32 +323,118 @@ Content-Type: application/json
 ### 📋 Ver todos
 ```http
 GET /api/vales-combustible
+
+Response:
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "orden_trabajo_id": 5,
+      "cantidad_galones": 20.00,
+      "precio_galon": 6.00,
+      "total": 120.00,
+      "fecha_vale": "2025-10-23 18:25:00",
+      "observaciones": null,
+      "user_id": null,
+      "orden_trabajo": {
+        "id": 5,
+        "numero_orden": "ORD-2025-000005",
+        "camion": {...},
+        "piloto": {...}
+      }
+    }
+  ]
+}
 ```
 
-### ➕ Crear vale
+### 🔍 Ver un vale
+```http
+GET /api/vales-combustible/{id}
+
+Response:
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "orden_trabajo_id": 5,
+    "cantidad_galones": 20.00,
+    "precio_galon": 6.00,
+    "total": 120.00,
+    "fecha_vale": "2025-10-23 18:25:00",
+    ...
+  }
+}
+```
+
+### ➕ Crear vale (SIN AUTENTICACIÓN)
 ```http
 POST /api/vales-combustible
 Content-Type: application/json
 
 {
   "orden_trabajo_id": 5,
-  "camion_id": 1,
-  "galones": 25.5,
-  "precio_galon": 4.50,
-  "total": 114.75,
-  "fecha_vale": "2025-10-23 08:00:00",
-  "numero_factura": "FAC-001234"
+  "cantidad_galones": 20.0,
+  "precio_galon": 6.00,
+  "total": 120.00,
+  "fecha_vale": "2025-10-23 18:25:00",
+  "observaciones": "Carga completa" (opcional)
+}
+
+Response:
+{
+  "success": true,
+  "message": "Vale de combustible creado exitosamente",
+  "data": {
+    "id": 1,
+    "orden_trabajo_id": 5,
+    "cantidad_galones": 20.00,
+    "precio_galon": 6.00,
+    "total": 120.00,
+    "fecha_vale": "2025-10-23 18:25:00",
+    "user_id": null,
+    "observaciones": "Carga completa",
+    "created_at": "2025-10-23T18:25:00.000000Z",
+    "updated_at": "2025-10-23T18:25:00.000000Z"
+  }
 }
 ```
+
+**⚠️ IMPORTANTE:** 
+- Usar `"cantidad_galones"` NO `"galones"`
+- El campo `total` se calcula automáticamente si no lo envías
+- `user_id` es automático (null si no hay login)
+- NO incluir `camion_id` ni `numero_factura`
 
 ### ✏️ Actualizar vale
 ```http
 PUT /api/vales-combustible/{id}
+Content-Type: application/json
+
+{
+  "cantidad_galones": 25.0,
+  "precio_galon": 6.50,
+  "fecha_vale": "2025-10-23 19:00:00",
+  "observaciones": "Vale actualizado"
+}
+
+Response:
+{
+  "success": true,
+  "message": "Vale de combustible actualizado exitosamente",
+  "data": {...}
+}
 ```
 
 ### ❌ Eliminar vale
 ```http
 DELETE /api/vales-combustible/{id}
+
+Response:
+{
+  "success": true,
+  "message": "Vale de combustible eliminado exitosamente"
+}
 ```
 
 ---

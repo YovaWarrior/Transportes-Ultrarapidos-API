@@ -75,3 +75,42 @@ Route::get('/test', function () {
         'laravel_version' => app()->version()
     ]);
 });
+
+Route::get('/seed-users', function () {
+    try {
+        Artisan::call('db:seed', ['--class' => 'UsersSeeder', '--force' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuarios creados exitosamente',
+            'output' => Artisan::output(),
+            'users' => [
+                'admin@transportes.com / admin123',
+                'operativo@transportes.com / operativo123',
+                'piloto@transportes.com / piloto123'
+            ]
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al crear usuarios',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+Route::get('/passport-install', function () {
+    try {
+        Artisan::call('passport:install', ['--force' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Passport instalado exitosamente',
+            'output' => Artisan::output()
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al instalar Passport',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
