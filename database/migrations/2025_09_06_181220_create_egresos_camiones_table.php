@@ -17,7 +17,7 @@ return new class extends Migration
         $table->string('destino');
         $table->string('tipo_carga');
         $table->datetime('fecha_egreso');
-        $table->foreignId('user_id')->constrained('users');
+        $table->foreignId('user_id')->nullable()->constrained('users');
         $table->integer('kilometraje')->nullable();
         $table->text('observaciones')->nullable();
         $table->timestamps();

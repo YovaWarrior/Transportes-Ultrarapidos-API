@@ -103,7 +103,7 @@ class OrdenTrabajoController extends Controller
             'origen' => $request->origen,
             'tipo_carga' => $request->tipo_carga,
             'fecha_ingreso' => $request->fecha_ingreso,
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id() ?? null,
             'observaciones' => $request->observaciones,
         ]);
 
@@ -140,7 +140,7 @@ class OrdenTrabajoController extends Controller
             'destino' => $request->destino,
             'tipo_carga' => $request->tipo_carga,
             'fecha_egreso' => $request->fecha_egreso,
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id() ?? null,
             'kilometraje' => $request->kilometraje,
             'observaciones' => $request->observaciones,
         ]);
