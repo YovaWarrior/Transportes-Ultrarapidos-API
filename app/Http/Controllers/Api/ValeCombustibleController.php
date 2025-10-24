@@ -29,7 +29,9 @@ class ValeCombustibleController extends Controller
         ]);
 
         $data = $request->all();
-        $data['user_id'] = auth()->id();
+        
+        // Si hay usuario autenticado, usar su ID, sino dejar null
+        $data['user_id'] = auth()->id() ?? null;
         
         // Calcular total si se proporciona precio por galón
         if ($request->precio_galon) {
