@@ -40,13 +40,21 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user();
-            $token = $user->createToken('API Token')->accessToken;
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Generar token simple (sin Passport)
+            $token = base64_encode($user->id . '|' . time() . '|' . $user->email);
 
             return response()->json([
                 'success' => true,
-                'user' => $user,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role ?? 'operativo',
+                    'active' => $user->active ?? true,
+                ],
                 'token' => $token,
             ]);
         }
