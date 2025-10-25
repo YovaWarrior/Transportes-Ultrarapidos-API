@@ -27,6 +27,30 @@ env_variables:
   DB_PASSWORD: LaravelPass123!
   DB_SOCKET: /cloudsql/transportes-ultrarapidos-api:us-central1:transportes-db
 
+handlers:
+# Servir archivos estáticos de Vite/Laravel Mix
+- url: /build
+  static_dir: public/build
+  secure: always
+
+# Servir CSS, JS, imágenes generales
+- url: /css
+  static_dir: public/css
+  secure: always
+
+- url: /js
+  static_dir: public/js
+  secure: always
+
+- url: /images
+  static_dir: public/images
+  secure: always
+
+# Todas las demás peticiones van a Laravel
+- url: /.*
+  script: auto
+  secure: always
+
 automatic_scaling:
   min_instances: 1
   max_instances: 5
