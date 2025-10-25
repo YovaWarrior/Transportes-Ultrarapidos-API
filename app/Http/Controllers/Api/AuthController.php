@@ -24,7 +24,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = $user->createToken('API Token')->accessToken;
+        // Generar token simple (sin Passport)
+        $token = base64_encode($user->id . '|' . time() . '|' . $user->email);
 
         return response()->json([
             'success' => true,
@@ -67,8 +68,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
-
+        // Simple logout (token invalidation would be handled client-side)
         return response()->json([
             'success' => true,
             'message' => 'Sesión cerrada exitosamente',
