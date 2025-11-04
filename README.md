@@ -2,8 +2,6 @@
 
 # Proyecto realizado por Erick Ortiz, Carlos Martinez y Andy Aquino
 
-Este es el backend de mi sistema de gestión para transportes. Lo desarrollé para administrar órdenes de trabajo, camiones, pilotos y todo lo relacionado con la operación de una empresa de transporte.
-
 ## 📋 ¿Qué hace?
 
 La API maneja:
