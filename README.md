@@ -1,5 +1,7 @@
 # 🚛 Transportes Ultrarrápidos - API
 
+# Proyecto realizado por Erick Ortiz, Carlos Martinez y Andy Aquino
+
 Este es el backend de mi sistema de gestión para transportes. Lo desarrollé para administrar órdenes de trabajo, camiones, pilotos y todo lo relacionado con la operación de una empresa de transporte.
 
 ## 📋 ¿Qué hace?
@@ -66,30 +68,7 @@ gcloud app deploy
 
 La API está en: `https://transportes-ultrarapidos-api.uc.r.appspot.com`
 
-## 📱 Endpoints principales
 
-### Autenticación
-```
-POST /api/login
-POST /api/register
-```
-
-### Recursos
-```
-GET/POST    /api/ordenes
-GET/POST    /api/camiones
-GET/POST    /api/pilotos
-GET/POST    /api/vales-combustible
-GET/POST    /api/transportistas
-GET/POST    /api/predios
-GET/POST    /api/bodegas
-```
-
-### Ingresos/Egresos
-```
-POST /api/ordenes/{id}/ingreso
-POST /api/ordenes/{id}/egreso
-```
 
 ## 🔑 Autenticación
 
@@ -119,10 +98,4 @@ La base de datos está en **Cloud SQL** con las siguientes tablas:
 - La base de datos se conecta vía Unix socket en producción
 - Las migraciones se ejecutan automáticamente en cada deploy
 
-## 🤝 Contribuciones
 
-Este es un proyecto personal, pero si encuentras algo que mejorar, avísame.
-
----
-
-Desarrollado por Carlos Giovanni Martínez Aldana
